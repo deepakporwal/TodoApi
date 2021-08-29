@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TodoApi.EmployeeService;
+using TodoApi.model;
 
 namespace TodoApi
 {
@@ -26,6 +29,11 @@ namespace TodoApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddControllers();
+            services.AddDbContextPool<EmployeeContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("EmployeeDBContextConnectionString")));
+            services.AddScoped<IEmployeeService, EmployeeService.EmployeeService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
